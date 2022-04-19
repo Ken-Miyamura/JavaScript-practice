@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "name": "http://file:///Users/miyaken/Documents/Javascript-practice/src/index.html",
+            "request": "launch",
+            "url": "http://file:///Users/miyaken/Documents/Javascript-practice/src/index.html"
+        }
+    ]
+}

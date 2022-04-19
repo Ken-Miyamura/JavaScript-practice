@@ -1,0 +1,28 @@
+const http = require('http');
+const fs = require('fs');
+
+const server = http.createServer((request, response) => {
+    let url = request.url;
+    console.log(url);
+    if ('/' === url) {
+        fs.readFile('src/index.html','utf-8', (err, data) => {
+            response.writeHead(200, { 'Content-Type': 'text/html' });
+            response.write(data);
+            response.end();
+        });
+    } else if ('/css/main.css' === url) {
+        fs.readFile('src/css/main.css', 'utf-8', (err, data) => {
+            response.writeHead(200, { 'Content-Type': 'text/css'});
+            response.write(data);
+            response.end();
+        })
+    } else if ('/js/index.js' === url) {
+        fs.readFile('src/js/index.js', 'utf-8', (err, data) => {
+            response.writeHead(200, { 'Content-Type': 'text/javascript'});
+            response.write(data);
+            response.end();
+        });
+    }
+});
+
+server.listen(8080);
