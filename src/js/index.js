@@ -127,3 +127,38 @@ const o2 = {
 const property = Object.keys(o2);
 const list = property.filter(prop => prop.match(/^b/));
 list.forEach(prop => console.log(`${prop}: ${o2[prop]}`));
+
+// 車のメーカーやモデルプロパティを持つクラスオブジェクトCarを作成
+const Car = (function() {
+  const carProps = new WeakMap();
+
+  class Car {
+    constructor(make, model) {
+      this.make = make;
+      this.model = model;
+      this.userGears = ['p', 'n', 'r', 'd'];
+      carProps.set(this, {userGear: this.userGears[0]})
+    }
+    // アクセッサプロパティ
+    get userGear(){return carProps.get(this).userGear;}
+    set userGear(value) {
+      if(this.userGears.indexOf(value) < 0) {
+        // 例外をスローしてエラーを示す
+        throw new Error(`ギアの設定が正しくない: ${value}`);
+      }
+      carProps.get(this).userGear = value;
+    }
+    // ギアをshiftするメソッド
+    shift(gear) {this.userGear = gear;}
+  }
+
+  return Car;
+})();
+
+const car1 = new Car("Tesla", "Model S");
+const car2 = new Car("Mazda", "3i");
+
+console.log(car1);
+
+car1.shift('x');
+console.log(car1.userGear);
