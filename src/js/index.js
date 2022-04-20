@@ -128,7 +128,11 @@ const property = Object.keys(o2);
 const list = property.filter(prop => prop.match(/^b/));
 list.forEach(prop => console.log(`${prop}: ${o2[prop]}`));
 
-// 車のメーカーやモデルプロパティを持つクラスオブジェクトCarを作成
+/**
+ * 車のメーカーやモデルプロパティを持つクラスオブジェクトCarを作成
+ * 即時関数を使ってWeakMapををクロージャに隠す
+ * 
+ */ 
 const Car = (function() {
   const carProps = new WeakMap();
 
@@ -148,7 +152,7 @@ const Car = (function() {
       }
       carProps.get(this).userGear = value;
     }
-    // ギアをshiftするメソッド
+    // ギアをshiftするメソッド。shiftはプロトタイプメソッド（Car.prototype.shift）
     shift(gear) {this.userGear = gear;}
   }
 
