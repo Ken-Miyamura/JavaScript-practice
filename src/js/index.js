@@ -22,7 +22,7 @@ $(function() {
 
   // currentTypeは識別子、16はリテラル
   let currentType = 16;
-  console.log(currentType);
+  // console.log(currentType);
 });
 
 function getSentence({subject, verb, object}) {
