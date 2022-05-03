@@ -40,6 +40,12 @@ const server = http.createServer((request, response) => {
             response.write(data);
             response.end();
         });
+    } else if ('/js/ajax.js' === url) {
+        fs.readFile('src/js/ajax.js', 'utf-8', (err, data) => {
+            response.writeHead(200, { 'Content-Type': 'text/javascript'});
+            response.write(data);
+            response.end();
+        });
     }
 });
 
