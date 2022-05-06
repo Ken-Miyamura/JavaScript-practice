@@ -14,3 +14,5 @@ const interValid = setInterval(() => {
     }
     console.log(`${i}: ${now}`);
 }, 5*1000);
+
+// スコープと非同期の実行
