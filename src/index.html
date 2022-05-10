@@ -13,7 +13,8 @@
     <canvas id="main-canvas" class="main-canvas"></canvas>
     <h2>GitHub User Info</h2>
     <!-- ボタンを押すと、自分のGitHubのアカウント情報が取得できる -->
-    <button onclick="fetchUserInfo('Ken-Miyamura');">Get User Info</button>
+    <input type="text" id="userId" value="" placeholder="githubアカウント名">
+    <button onclick="main();">Get User Info</button>
     <!-- 整形したHTMLの表示先 -->
     <div id="result"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

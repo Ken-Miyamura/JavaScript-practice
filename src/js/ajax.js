@@ -1,35 +1,63 @@
+async function main() {
+    try {
+        const userId = document.getElementById('userId').value;
+        // Promiseに解決されたJSONオブジェクトを定数に代入
+        const userInfo = await fetchUserInfo(userId);
+        const view = createView(userInfo);
+        displayView(view);
+    } catch (err) {
+        console.error(`エラーが発生：${err}`);
+    }
+
+    /**
+     * Promiseチェーンで処理分割した形跡
+     */
+    // fetchUserInfo('Ken-Miyamura')
+    // JSONオブジェクトで解決されるPromise
+    // .then((userInfo) => createView(userInfo))
+    // HTML文字列で解決されるPromise
+    // .then((view) => displayView(view))
+    // Promiseチェーンの中でエラー発生した場合、キャッチ
+    // .catch(err => {
+    //     console.log(`エラーが発生${err}`);
+    // });
+}
+
 /**
  * GitHubのユーザー情報を取得するAPIを叩く
  */
 function fetchUserInfo(userId) {
-    fetch(
-        `https://api.github.com/users/${encodeURIComponent(userId)}`
-    ).then(res => {
-        console.log(res.status);
+    // fetchの返り血のPromiseを返す。これによって、fetchUserInfo関数を呼び出すmain関数で非同期処理の結果を扱えるようになる。
+    return fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
+    .then(res => {
         if(!res.ok) {
-            console.log("エラーレスポンス", res);
+            // エラーレスポンスからrejectedなPromiseを作成して返す
+            return Promise.reject(new Error(`${res.status}: ${res.statusText}`));
         } else {
-            return res.json()
-            .then(userInfo => {
-                // HTMLの組み立て
-                const view = escapeHtml`
-                    <h4>${userInfo.name} (@${userInfo.login})</h4>
-                    <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
-                    <dl>
-                        <dt>Location</dt>
-                        <dd>${userInfo.location}</dd>
-                        <dt>Repositories</dt>
-                        <dd>${userInfo.public_repos}</dd>
-                    </dl>
-                `;
-                // HTMLの挿入
-                const result = document.getElementById('result');
-                result.innerHTML = view;
-            });
+            // JSONオブジェクトでPromiseを返す
+            return res.json();
         }
-    }).catch(err => {
-        console.log(err);
     });
+}
+
+// HTMLの組み立てを行う関数
+function createView(userInfo) {
+    return escapeHtml`
+    <h4>${userInfo.name} (@${userInfo.login})</h4>
+    <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+    <dl>
+        <dt>Location</dt>
+        <dd>${userInfo.location}</dd>
+        <dt>Repositories</dt>
+        <dd>${userInfo.public_repos}</dd>
+    </dl>
+    `;
+}
+
+// HTMLに表示する関数
+function displayView(view) {
+    const result = document.getElementById('result');
+    result.innerHTML = view;
 }
 
 // 特殊な記号に対するエスケープ処理
