@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 
 const server = http.createServer((request, response) => {
-    let url = request.url;
+    const url = request.url;
     console.log(url);
     if ('/' === url) {
         fs.readFile('src/index.html','utf-8', (err, data) => {
@@ -76,6 +76,16 @@ const server = http.createServer((request, response) => {
         });
     } else if ('/js/asynchronous.js' === url) {
         fs.readFile('src/js/asynchronous.js', 'utf-8', (err, data) => {
+            if(err) {
+                console.log(err.message);
+            } else {
+                response.writeHead(200, { 'Content-Type': 'text/javascript'});
+                response.write(data);
+                response.end();
+            }
+        });
+    } else if ('/js/async_await.js' === url) {
+        fs.readFile('src/js/async_await.js', 'utf-8', (err, data) => {
             if(err) {
                 console.log(err.message);
             } else {
